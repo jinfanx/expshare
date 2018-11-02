@@ -11,6 +11,7 @@
         {% csrf_token %}
         {% block modal-form-content %}
         {% endblock %}
+        <button type="submit" hidden="hidden" id="btn-hidden"></button>
     </form>
 
 </div>
@@ -25,7 +26,7 @@
 
 <script>
 
-{#    csrf表单#}
+    {#    csrf表单#}
     var csrftoken = getCookie('csrftoken');
 
     $.ajaxSetup({
@@ -37,18 +38,36 @@
         }
     });
 
-    $("#btn-submit").bind("click", function () {
-        var form = new FormData($("#form-modal")[0]);
-        $.ajax({
-            url: "{% block modal-url %}{% endblock %}",
-            type: "post",
-            data: form,
-            processData: false,
-            contentType : false,
-            success:function(r){
-                alert(r);
-                window.location.href = "{% block modal-redirect %}{% endblock %}";
+    $.validator.setDefaults({
+        submitHandler: function () {
+            alert("提交事件!");
+        }
+    });
+    $().ready(function () {
+        $("#form-modal").validate({
+            submitHandler: function (form) {
+                console.log("校验通过!");
+                var form = new FormData($("#form-modal")[0]);
+                $.ajax({
+                    url: "{% block modal-url %}{% endblock %}",
+                    type: "post",
+                    data: form,
+                    processData: false,
+                    contentType: false,
+                    success: function (r) {
+                        alert(r);
+                        window.location.href = "{% block modal-redirect %}{% endblock %}";
+                    }
+                });
+            },
+            invalidHandler: function(form, validator) {
+                console.log("校验未通过！");
+                return false;
             }
         });
+    });
+
+    $("#btn-submit").bind("click", function () {
+        $("#btn-hidden").click();
     });
 </script>

@@ -30,6 +30,7 @@ urlpatterns = [
     path('addshare/',views.addshare),
     path('list_share/<str:category>/',views.list_shares),
     path('goregister/',views.GoRegisterView.as_view()),
+    path('register/',views.RegisterView.as_view()),
     # url(r'^search/', include(urls)),
     url(r'search/',views.MySeachView())
 ]

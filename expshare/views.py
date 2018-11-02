@@ -8,6 +8,7 @@ from expshare import util
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from expshare import settings
 from haystack.views import SearchView
+from django.contrib.auth.models import User
 
 
 #搜索
@@ -179,5 +180,19 @@ def search(request):
     return render(request, 'expshare/index.html',
                   {'page': page, 'category': category_list, 'page_url': page_url, 'category_name': '搜索结果'})
 
+# 注册跳转
 class GoRegisterView(TemplateView):
     template_name = 'expshare/auth/register.html'
+
+#注册
+def register(request):
+    req = request.POST
+    if request.method=='GET':
+        req = request.GET
+    username = req.get('username')
+    password = req.get('password')
+    email = req.get('email')
+    #用户未激活，需要点击邮件中的链接激活账户
+    User.objects.create_user(username,password,email,is_active=False)
+    #TODO 发邮件
+    return render( 'expshare/auth/toconfirm.html')

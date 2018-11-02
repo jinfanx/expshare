@@ -2,6 +2,8 @@
 <script src="{% static 'jquery/jquery-3.1.0.js' %}"></script>
 <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
 <script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
+<script src="{% static 'js/jquery.validate.min.js' %}"></script>
+<script src="{% static 'js/messages_zh.min.js' %}"></script>
 
 <style>
     .nowarp {
@@ -10,6 +12,15 @@
 
     .highlighted {
         color: red;
+    }
+
+    .error{
+        color:red;
+    }
+
+    .irequired{
+        color:red;
+        font-weight:bold;
     }
 
     pre{
