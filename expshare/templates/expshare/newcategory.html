@@ -1,56 +1,5 @@
 {% extends 'expshare/basemodal.html' %}
-{% comment %}
-<div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    <h4 class="modal-title" id="myModalLabel">新建分类</h4>
-</div>
-<div class="modal-body">
-    <form class="form-horizontal" id="form-category" role="form">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="firstname" class="col-sm-2 control-label">名称</label>
-            <div class="col-sm-9">
-                <input name="name" type="text" class="form-control" id="firstname" placeholder="请输入名称">
-            </div>
-        </div>
-        <button type="submit" hidden="hidden" id="btn-submit-form"></button>
-    </form>
 
-</div>
-<div class="modal-footer">
-    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-    <button type="button" class="btn btn-primary" id="btn-submit">提交</button>
-</div>
-<script>
-
-{#    csrf表单#}
-    var csrftoken = getCookie('csrftoken');
-
-    $.ajaxSetup({
-        crossDomain: false, // obviates need for sameOrigin test
-        beforeSend: function (xhr, settings) {
-            if (!csrfSafeMethod(settings.type)) {
-                xhr.setRequestHeader("X-CSRFToken", csrftoken);
-            }
-        }
-    });
-
-    $("#btn-submit").bind("click", function () {
-        var form = new FormData($("#form-category")[0]);
-        $.ajax({
-            url: "/addcategory/",
-            type: "post",
-            data: form,
-            processData: false,
-            contentType : false,
-            success:function(r){
-                alert(r);
-                window.location.href = "/index/";
-            }
-        });
-    });
-</script>
-{% endcomment %}
 {% block modal-title %}新建分类{% endblock %}
 {% block modal-form-content %}
     <div class="form-group">
