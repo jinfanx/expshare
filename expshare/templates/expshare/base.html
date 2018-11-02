@@ -1,0 +1,67 @@
+{% load staticfiles %}
+<script src="{% static 'jquery/jquery-3.1.0.js' %}"></script>
+<link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
+<script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
+
+<style>
+    .nowarp {
+        white-space: nowrap;
+    }
+
+    .highlighted {
+        color: red;
+    }
+
+    pre{
+        border:0px;
+        background-color:transparent;
+        white-space: pre-wrap!important;
+        word-wrap: break-word!important;
+        *white-space:normal!important;
+    }
+
+</style>
+
+<script>
+    /*js的replace方法只能替换第一个，用正则替换*/
+    String.prototype.replaceAll = function (f, e) {
+        var reg = new RegExp(f, "g");
+        return this.replace(reg, e);
+    }
+
+    /*高亮函数 words:整段文本 query：关键字，可以是多个空格分隔的多个不同关键字*/
+    function highlight(words, query) {
+        words = words+'';
+        query = query+'';
+        var kws = query.split(" ");
+        for (i in kws) {
+            var k = kws[i];
+            var r = '<span class="highlighted">' + k + '</span>';
+            words = words.replaceAll(k, r);
+            console.log(words);
+        }
+        return words+"";
+    }
+
+    /*获取cookie值*/
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+     function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+</script>

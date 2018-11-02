@@ -1,0 +1,20 @@
+{% extends 'expshare/basemodal.html' %}
+
+{% block modal-title %}
+    注册
+{% endblock %}
+
+{% block modal-form-content %}
+  <div class="form-group">
+    <label for="firstname" class="col-sm-2 control-label">名字</label>
+    <div class="col-sm-9">
+      <input type="text" class="form-control" id="firstname" placeholder="请输入名字">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="lastname" class="col-sm-2 control-label">姓</label>
+    <div class="col-sm-9">
+      <input type="text" class="form-control" id="lastname" placeholder="请输入姓">
+    </div>
+  </div>
+{% endblock %}

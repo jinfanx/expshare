@@ -1,0 +1,32 @@
+<div class="text-center">
+    <ul class="pagination">
+        {# 首页 #}
+        {% if page.number != 1 %}
+            <li><a href="{{ page_url }}?page=1">首页</a></li>
+        {% else %}
+            <li class="disabled"><a>首页</a></li>
+        {% endif %}
+        {% if page.has_previous %}
+            <li><a href="{{ page_url }}?page={{ page.number|add:-1 }}">上一页</a></li>
+        {% else %}
+             <li class="disabled"><a>上一页</a></li>
+        {% endif %}
+
+{#        <li class="pagination">{{ page.paginator.num_pages }}</li>#}
+
+        {# 页码 #}
+        <li class="active"><a>{{ page.number }}</a></li>
+
+        {% if page.has_next %}
+            <li><a href="{{ page_url }}?page={{ page.number|add:1 }}">下一页</a></li>
+        {% else %}
+             <li class="disabled"><a>下一页</a></li>
+        {% endif %}
+        {# 尾页 #}
+        {% if page.number != page.paginator.num_pages %}
+            <li><a href="{{ page_url }}?page={{ page.paginator.num_pages }}">尾页</a></li>
+        {% else %}
+             <li class="disabled"><a>尾页</a></li>
+        {% endif %}
+    </ul>
+</div>

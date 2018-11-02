@@ -1,0 +1,82 @@
+{% load highlight %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>经验共享</title>
+    {% include 'expshare/base.html' %}
+
+</head>
+<body>
+
+{# 导航栏 #}
+{% include 'expshare/nav.html' %}
+
+{# 首页内容 #}
+<div style="padding:20px;margin-top: 30px;">
+    <table class="table table-bordered table-striped">
+        <caption><h4>搜索结果</h4></caption>
+        <thead>
+        <tr>
+            <td class="nowarp">序号</td>
+            <td class="nowarp">问题</td>
+            <td class="nowarp">原因</td>
+            <td class="nowarp">解决办法</td>
+            <td class="nowarp">热度</td>
+            <td class="nowarp">操作</td>
+        </tr>
+        </thead>
+        <tbody>
+        {% for i in page.object_list %}
+            <tr>
+                <td>{{ forloop.counter|add:page.start_index|add:-1 }}</td>
+                <td>
+{#                    {% highlight i.object.problem with query max_length 500 %}#}
+                    <div class="str-highlight">{{ i.object.problem }}</div>
+                </td>
+                {% if not i.object.reason %}
+                    <td>无</td>
+                {% else %}
+                    <td>{{ i.object.reason }}</td>
+                {% endif %}
+
+                <td><pre>{{ i.object.resolve }}</pre></td>
+                <td>{{ i.object.viewnum }}</td>
+                <td style=" white-space:nowrap">
+                    <button class="btn btn-danger btn-xs">报错</button>
+                    <button class="btn btn-warning btn-xs">有疑问</button>
+                    <button class="btn btn-success btn-xs">点赞</button>
+                </td>
+            </tr>
+        {% empty %}
+            <h1>搜索结果为空！</h1>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{# 分页栏 #}
+{% if page.has_previous or page.has_next %}
+    <div>
+        {% if page.has_previous %}<a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">{% endif %}&laquo;
+        上一页{% if page.has_previous %}</a>{% endif %}
+        |
+        {% if page.has_next %}<a href="?q={{ query }}&amp;page={{ page.next_page_number }}">{% endif %}下一页 &raquo;
+        {% if page.has_next %}</a>{% endif %}
+    </div>
+{% endif %}
+
+{% include 'expshare/modals.html' %}
+
+</body>
+</html>
+<script>
+
+    $(document).ready(function(){
+        $(".str-highlight").each(function(i){
+            console.log($(this).html());
+            $(this).html(highlight($(this).html(),'{{ query }}'));
+        });
+    });
+
+</script>

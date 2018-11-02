@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>NoteAndShare</title>
+    {% include 'expshare/base.html' %}
+
+</head>
+<body>
+
+{# 导航栏 #}
+{% include 'expshare/nav.html' %}
+
+{# 首页内容 #}
+<div style="padding:20px;margin-top: 30px;">
+    <table class="table table-bordered table-striped">
+        <caption><h4>{{ category_name }}</h4></caption>
+        <thead>
+        <tr>
+            <td class="nowarp">序号</td>
+            <td class="nowarp">问题</td>
+            <td class="nowarp">原因</td>
+            <td class="nowarp">解决办法</td>
+            <td class="nowarp">热度</td>
+            <td  class="nowarp">操作</td>
+        </tr>
+        </thead>
+        <tbody>
+        {% for i in page.object_list %}
+            <tr>
+                <td>{{ forloop.counter|add:page.start_index|add:-1 }}</td>
+                <td><pre>{{ i.problem }}</pre></td>
+                {% if not i.reason  %}
+                    <td>无</td>
+                {% else %}
+                    <td><pre>{{ i.reason }}</pre></td>
+                {% endif %}
+
+                <td><pre>{{ i.resolve }}</pre></td>
+                <td>{{ i.viewnum }}</td>
+                <td style=" white-space:nowrap">
+                    <button class="btn btn-danger btn-xs">报错</button>
+                    <button class="btn btn-warning btn-xs">有疑问</button>
+                    <button class="btn btn-success btn-xs">点赞</button>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{# 分页栏 #}
+{% include 'expshare/pagenation.html' %}
+
+{#模态框#}
+{% include 'expshare/modals.html' %}
+
+</body>
+</html>
