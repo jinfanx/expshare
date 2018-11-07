@@ -9,6 +9,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from expshare import settings
 from haystack.views import SearchView
 from django.contrib.auth.models import User
+from .util import MailUtil,JsonUtil
 
 
 #搜索
@@ -129,7 +130,7 @@ def addshare(request):
 
 def list_shares(request, category):
     c = models.CategoryModel.objects.get(id=category)
-    share_list = models.ExpModel.objects.all().filter(category=c).order_by('viewnum').reverse()
+    share_list = models.ExpModel.objects.all().filter(category=c).order_by('-viewnum')
     pagenator = Paginator(share_list, settings.PAGE_SIZE)
 
     # 返回的page对象
@@ -192,7 +193,48 @@ def register(request):
     username = req.get('username')
     password = req.get('password')
     email = req.get('email')
+    phone = req.get('phone')
+    profession = req.get('profession')
+    ls = locals()
+    for k in ls:
+        print("{0}:{1}".format(k,ls[k]))
     #用户未激活，需要点击邮件中的链接激活账户
-    User.objects.create_user(username,password,email,is_active=False)
-    #TODO 发邮件
-    return render( 'expshare/auth/toconfirm.html')
+    try:
+        u = User.objects.create_user(username,password=password,email=email,is_active=False)
+        dic = {'user':u, 'phone':phone, 'profession': profession}
+        models.UserExtends.objects.create(**dic)
+    except Exception as e:
+        return HttpResponse(JsonUtil.get_json_response('fail','添加用户失败'+e.__str__()),content_type='application/json')
+    #发邮件
+    try:
+        MailUtil.send_register_email(email,u.id)
+    except Exception as e:
+        return HttpResponse(JsonUtil.get_json_response('fail','邮件发送失败！'+e.__str__()),content_type='application/json')
+    return HttpResponse(JsonUtil.get_json_response('success','注册成功，邮件确认即可完成注册！'),content_type='application/json')
+
+def active_acct(request,email):
+    #激活邮件对应的账户
+    try:
+        u = User.objects.filter(email=email).update(is_active=True)
+    except Exception as e:
+        return render(request, 'expshare/auth/regsuccess.html', {'result':'fail','msg':'账户激活失败！'+e.__str__()})
+
+    return render(request,'expshare/auth/regsuccess.html',{'result':'success','msg':'注册成功！'})
+
+def check_username(request):
+    username = request.GET.get('username')
+    count = User.objects.filter(username=username).count()
+    if count>0:
+        return HttpResponse(JsonUtil.get_json_response('fail','用户已存在'),content_type='application/json')
+    else:
+        return HttpResponse(JsonUtil.get_json_response('success','用户名可用'),content_type='application/json')
+
+def check_email(request):
+    email = request.GET.get('email')
+    count = User.objects.filter(email=email).count()
+    msg = '邮箱已注册'
+    result = 'fail'
+    if count==0:
+        msg = '邮箱可用'
+        result = 'success'
+    return HttpResponse(JsonUtil.get_json_response(result,msg),content_type='application/json')

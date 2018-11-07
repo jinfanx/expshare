@@ -25,6 +25,13 @@
 </div>
 
 <script>
+    /*清空模态框*/
+    $('.modal').on('hidden.bs.modal', function () {
+        document.getElementById("form-modal").reset();
+        $(".error").each(function(){
+            $(this).remove();
+        });
+    });
 
     {#    csrf表单#}
     var csrftoken = getCookie('csrftoken');
@@ -55,12 +62,16 @@
                     processData: false,
                     contentType: false,
                     success: function (r) {
-                        alert(r);
+                        if (r.result) {
+                            alert(r.msg);
+                        } else {
+                            alert(r);
+                        }
                         window.location.href = "{% block modal-redirect %}{% endblock %}";
                     }
                 });
             },
-            invalidHandler: function(form, validator) {
+            invalidHandler: function (form, validator) {
                 console.log("校验未通过！");
                 return false;
             }
@@ -68,6 +79,13 @@
     });
 
     $("#btn-submit").bind("click", function () {
-        $("#btn-hidden").click();
+        var r = true;
+        {% block modal-validation-custom %}true{% endblock %}
+        if(r){
+             $("#btn-hidden").click();
+        }
+
     });
+
+    {% block modal-script %}{% endblock %}
 </script>

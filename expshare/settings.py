@@ -25,7 +25,7 @@ SECRET_KEY = 'msks+fsccv#c1fa&i)a$g0)nns%e@^9986sp7qs6wfx#6x95%h'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -136,3 +136,11 @@ HAYSTACK_CONNECTIONS = {
 }
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 HAYSTACK_SEARCH_RESULTS_PER_PAGE = 20
+
+# 邮件配置
+EMAIL_USE_SSL = True
+EMAIL_HOST = 'smtp.qq.com'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'renjin_fan@foxmail.com'
+EMAIL_HOST_PASSWORD = 'zndpszrbwxjafbde'
+DEFAULT_FROM_EMAIL = 'jinfanx'

@@ -14,26 +14,31 @@
         color: red;
     }
 
-    .error{
-        color:red;
+    .error {
+        color: red;
     }
 
-    .irequired{
-        color:red;
-        font-weight:bold;
+    .irequired {
+        color: red;
+        font-weight: bold;
     }
 
-    pre{
-        border:0px;
-        background-color:transparent;
-        white-space: pre-wrap!important;
-        word-wrap: break-word!important;
-        *white-space:normal!important;
+    pre {
+        border: 0px;
+        background-color: transparent;
+        white-space: pre-wrap !important;
+        word-wrap: break-word !important;
+        *white-space: normal !important;
     }
 
 </style>
 
 <script>
+    /*模态框关闭清空*/
+    $('body').on('hidden.bs.modal', '.modal', function () {
+        $(this).removeData('bs.modal');
+    });
+
     /*js的replace方法只能替换第一个，用正则替换*/
     String.prototype.replaceAll = function (f, e) {
         var reg = new RegExp(f, "g");
@@ -42,8 +47,8 @@
 
     /*高亮函数 words:整段文本 query：关键字，可以是多个空格分隔的多个不同关键字*/
     function highlight(words, query) {
-        words = words+'';
-        query = query+'';
+        words = words + '';
+        query = query + '';
         var kws = query.split(" ");
         for (i in kws) {
             var k = kws[i];
@@ -51,7 +56,7 @@
             words = words.replaceAll(k, r);
             console.log(words);
         }
-        return words+"";
+        return words + "";
     }
 
     /*获取cookie值*/
@@ -71,7 +76,7 @@
         return cookieValue;
     }
 
-     function csrfSafeMethod(method) {
+    function csrfSafeMethod(method) {
         // these HTTP methods do not require CSRF protection
         return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
     }

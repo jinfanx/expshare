@@ -32,12 +32,12 @@
                 <td>{{ forloop.counter|add:page.start_index|add:-1 }}</td>
                 <td>
 {#                    {% highlight i.object.problem with query max_length 500 %}#}
-                    <div class="str-highlight">{{ i.object.problem }}</div>
+                    <div class="str-highlight"><pre>{{ i.object.problem }}</pre></div>
                 </td>
                 {% if not i.object.reason %}
                     <td>无</td>
                 {% else %}
-                    <td>{{ i.object.reason }}</td>
+                    <td><pre>{{ i.object.reason }}</pre></td>
                 {% endif %}
 
                 <td><pre>{{ i.object.resolve }}</pre></td>

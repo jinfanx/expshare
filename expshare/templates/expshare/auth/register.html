@@ -9,35 +9,40 @@
     <div class="form-group">
         <label for="username" class="col-sm-2 control-label">用户名<span class="irequired"> * </span></label>
         <div class="col-sm-9">
-            <input name="username" autocomplete="off" type="text" class="form-control" id="username" placeholder="请输入用户名" required>
+            <input name="username" autocomplete="off" type="text" class="form-control" id="username"
+                   placeholder="请输入用户名" required>
         </div>
     </div>
 
     <div class="form-group">
         <label for="password" class="col-sm-2 control-label">密码<span class="irequired"> * </span></label>
         <div class="col-sm-9">
-            <input type="password" autocomplete="off" name="password" class="form-control" id="password" placeholder="输入密码" required>
+            <input type="password" autocomplete="off" name="password" class="form-control" id="password"
+                   placeholder="输入密码" required>
         </div>
     </div>
 
     <div class="form-group">
         <label for="password-confirm" class="col-sm-2 control-label">确认密码<span class="irequired"> * </span></label>
         <div class="col-sm-9">
-            <input type="password" autocomplete="off" class="form-control" id="password-confirm" placeholder="确认密码" required>
+            <input type="password" autocomplete="off" class="form-control" id="password-confirm" placeholder="确认密码"
+                   required>
         </div>
     </div>
 
     <div class="form-group">
         <label for="email" class="col-sm-2 control-label">邮箱<span class="irequired"> * </span></label>
         <div class="col-sm-9">
-            <input type="email" autocomplete="off" class="form-control" id="email" name="email" placeholder="输入邮箱，方便找回密码" required>
+            <input type="email" autocomplete="off" class="form-control" id="email" name="email"
+                   placeholder="输入邮箱，方便找回密码" required>
         </div>
     </div>
 
     <div class="form-group">
         <label for="mobilephone" class="col-sm-2 control-label"> 手机&nbsp;&nbsp;</label>
         <div class="col-sm-9">
-            <input type="email" autocomplete="off" class="form-control" id="mobilephone" name="mobilephone" placeholder="手机号，选填">
+            <input type="text" autocomplete="off" class="form-control" id="mobilephone" name="phone"
+                   placeholder="手机号，选填">
         </div>
     </div>
 
@@ -54,3 +59,81 @@
 {% endblock %}
 
 {% block modal-url %}/register/{% endblock %}
+{% block modal-script %}
+{#    <script>#}
+        $(document).ready(function () {
+            $("#username").bind("blur", function () {
+                if ($("#username").val()) {
+                    $.ajax({
+                        type: "get",
+                        url: "/check_username/",
+                        data: {username: $("#username").val()},
+                        success: function (resp) {
+                            if (resp.result == 'success') {
+                                $(".err-user").each(function(){
+                                    $(this).remove();
+                                });
+                            } else {
+                                console.log('用户已存在！');
+                                err_html = '<label id="username-exists" class="error err-user" for="username">' + resp.msg + '</label>';
+                                $("#username").parent().append(err_html);
+                            }
+                        }
+                    });
+                }
+            });
+            $("#email").bind("blur", function () {
+                if ($("#email").val()) {
+                    $.ajax({
+                        type: "get",
+                        url: "/check_email/",
+                        data: {email: $("#email").val()},
+                        success: function (resp) {
+                            if (resp.result == 'success') {
+                                $(".err-email").each(function(){
+                                    $(this).remove();
+                                });
+                            } else {
+                                console.log('邮箱已注册！');
+                                err_html = '<label id="email-exists" class="error err-email" for="email">' + resp.msg + '</label>';
+                                $("#email").parent().append(err_html);
+                            }
+                        }
+                    });
+                }
+            });
+            $("#password-confirm").bind("blur", function () {
+                var passwd = $("#password").val();
+                var passwd_confirm = $("#password-confirm").val();
+                if(passwd){
+                    if(passwd!=passwd_confirm){
+                        err_html = '<label id="password-check" class="error err-password" for="password-confirm">两次输入不一致</label>';
+                        $("#password-confirm").parent().append(err_html);
+                        $("#password").val("");
+                        $("#password-confirm").val("");
+                    }else{
+                        $(".err-password").each(function(){
+                            $(this).remove();
+                        });
+                    }
+                }
+            });
+        });
+{#    </script>#}
+{% endblock %}
+
+{#自定义校验#}
+{% block modal-validation-custom %}
+    if($(".error")){
+        $(".error").each(function(){
+            if($(this).attr("display")){
+{#                该条数据合法#}
+            }else{
+                alert("请先完成表单！");
+                r = false;
+                return false;
+            }
+        });
+
+    }
+{% endblock %}

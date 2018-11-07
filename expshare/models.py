@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class BaseModel(models.Model):
     '''
@@ -59,3 +60,10 @@ class ExpModel(BaseModel):
 
     def __str__(self):
         return "{0}".format(self.problem)
+
+#用户模型拓展-通过外键关联
+class UserExtends(models.Model):
+    user = models.OneToOneField(User,on_delete=models.CASCADE)
+    phone = models.CharField(max_length=11,verbose_name='手机号')
+    #职业 0-学生 1-职场人
+    profession = models.IntegerField(verbose_name='职业')
