@@ -126,7 +126,7 @@ USE_TZ = False
 STATIC_URL = '/static/'
 
 #分页参数，页面大小
-PAGE_SIZE = 20
+PAGE_SIZE = 10
 
 HAYSTACK_CONNECTIONS = {
     'default': {

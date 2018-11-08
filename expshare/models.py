@@ -67,3 +67,27 @@ class UserExtends(models.Model):
     phone = models.CharField(max_length=11,verbose_name='手机号')
     #职业 0-学生 1-职场人
     profession = models.IntegerField(verbose_name='职业')
+
+#反馈-注册用户真对某条记录发起的反馈，包括错误反馈、有疑问等
+class Feedback(BaseModel):
+    share = models.ForeignKey(to='ExpModel',to_field='id',on_delete=models.CASCADE,verbose_name='问题')
+    reason = models.TextField(max_length=2000,verbose_name='原因')
+    is_resolved = models.BooleanField(default=False,verbose_name='已处理')
+    # 状态 0-待处理 1-处理中 2-已完结
+    state = models.IntegerField(default=0, verbose_name='状态')
+    # 反馈类型 0-错误 1-有疑问
+    type = models.IntegerField(default=0,verbose_name='类型')
+    resolve_note = models.TextField(max_length=500,verbose_name='处理说明')
+
+    class Meta:
+        verbose_name = u'反馈'
+        verbose_name_plural = u'反馈'
+
+    def __str__(self):
+        return "问题：{0}——理由：{1}".format(self.share,self.reason)
+
+#点赞记录
+class SharePraise(models.Model):
+    id = models.AutoField(primary_key=True)
+    shareid = models.IntegerField()
+    userid = models.IntegerField()

@@ -7,7 +7,7 @@
             <ul class="nav navbar-nav">
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        编程语言
+                        分类
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
@@ -16,7 +16,7 @@
                                 <li><a href="/list_share/{{ c.id }}">{{ c.name }}</a></li>
                                 <li class="divider"></li>
                             {% else %}
-                                 <li><a href="/list_share/{{ c.id }}">{{ c.name }}</a></li>
+                                <li><a href="/list_share/{{ c.id }}">{{ c.name }}</a></li>
                             {% endif %}
                         {% endfor %}
                     </ul>
@@ -29,25 +29,46 @@
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a data-toggle="modal" href="/newcategory" data-target="#myModal">新建分类</a></li>
-                        <li class="divider"></li>
+                        {% if perms.expshare.add_categorymodel %}
+                            <li><a data-toggle="modal" href="/newcategory" data-target="#myModal">新建分类</a></li>
+                            <li class="divider"></li>
+                        {% endif %}
+
                         <li><a data-toggle="modal" href="/newshare" data-target="#model-share">新建share</a></li>
                     </ul>
                 </li>
             </ul>
             <ul class="nav navbar-nav">
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        登录
-                        <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a data-toggle="modal" href="/gologin" data-target="#myModal">登录</a></li>
-                        <li class="divider"></li>
-                        <li><a data-toggle="modal" href="/goregister" data-target="#model-register">注册</a></li>
-                    </ul>
+                    {% if request.user.is_authenticated %}
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            {{ request.user.username }}
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a data-toggle="modal" href="/go_usercenter" data-target="#modal-login">个人中心</a></li>
+                            <li class="divider"></li>
+                            <li><a href="/logout">退出登录</a></li>
+                        </ul>
+                    {% else %}
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            登录
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a data-toggle="modal" href="/go_login" data-target="#modal-login">登录</a></li>
+                            <li class="divider"></li>
+                            <li><a data-toggle="modal" href="/goregister" data-target="#model-register">注册</a></li>
+                        </ul>
+                    {% endif %}
                 </li>
             </ul>
+            {% if request.user.is_authenticated %}
+                <ul class="nav navbar-nav">
+                    <li><a href="/my_note/">我的笔记</a></li>
+                </ul>
+            {% endif %}
+
         </div>
 
         <form class="navbar-form navbar-right" method="get" role="search" action="/search/">

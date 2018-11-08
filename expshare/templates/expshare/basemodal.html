@@ -67,7 +67,10 @@
                         } else {
                             alert(r);
                         }
-                        window.location.href = "{% block modal-redirect %}{% endblock %}";
+                        if(r.result=='success'){
+                             window.location.href = "{% block modal-redirect %}{% endblock %}";
+                        }
+
                     }
                 });
             },

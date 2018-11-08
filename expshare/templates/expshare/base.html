@@ -34,11 +34,6 @@
 </style>
 
 <script>
-    /*模态框关闭清空*/
-    $('body').on('hidden.bs.modal', '.modal', function () {
-        $(this).removeData('bs.modal');
-    });
-
     /*js的replace方法只能替换第一个，用正则替换*/
     String.prototype.replaceAll = function (f, e) {
         var reg = new RegExp(f, "g");

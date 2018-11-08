@@ -1,0 +1,25 @@
+{% extends 'expshare/basemodal.html' %}
+
+{% block modal-title %}用户登录{% endblock %}
+
+{% block modal-form-content %}
+    <div class="form-group">
+        <label for="username" class="col-sm-2 control-label">用户名<span class="irequired"> * </span></label>
+        <div class="col-sm-9">
+            <input name="username" autocomplete="off" type="text" class="form-control" id="username"
+                   placeholder="请输入用户名或邮箱" required>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="password" class="col-sm-2 control-label">密码<span class="irequired"> * </span></label>
+        <div class="col-sm-9">
+            <input type="password" autocomplete="off" name="password" class="form-control" id="password"
+                   placeholder="输入密码" required>
+        </div>
+    </div>
+{% endblock %}
+
+{% block btn-submit%}登录{% endblock %}
+{% block modal-url %}/login/{% endblock %}
+{% block modal-redirect %}/index/{% endblock %}

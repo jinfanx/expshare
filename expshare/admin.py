@@ -12,7 +12,12 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(models.ExpModel)
 class ExpModelAdmin(admin.ModelAdmin):
-    list_display = ('problem','reason','resolve','category','state')
+    list_display = ('problem','reason','resolve','category','state',)
+    list_per_page = 20
+
+@admin.register(models.Feedback)
+class FeedbackAdmin(admin.ModelAdmin):
+    list_display = ('share','type','reason','is_resolved','state','resolve_note','createuser','createdate','updateuser','updatedate',)
     list_per_page = 20
 
 class UserInline(admin.StackedInline):

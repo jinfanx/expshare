@@ -34,6 +34,12 @@ urlpatterns = [
     path('active_acct/<str:email>/',views.active_acct),
     path('check_username/',views.check_username),
     path('check_email/',views.check_email),
+    path('go_login/',views.go_login),
+    path('login/',views.login),
+    path('logout/',views.logout),
+    path('my_note/',views.my_note),
+    path('praise/',views.praise),
+    path('feedback/',views.feedback),
     # url(r'^search/', include(urls)),
-    url(r'search/',views.MySeachView())
+    url(r'search/',views.MySeachView()),
 ]

@@ -37,11 +37,11 @@
                 {% endif %}
 
                 <td><pre>{{ i.resolve }}</pre></td>
-                <td>{{ i.viewnum }}</td>
+                <td><span id="viewnum_{{ i.id }}">{{ i.viewnum }}</span></td>
                 <td style=" white-space:nowrap">
-                    <button class="btn btn-danger btn-xs">报错</button>
-                    <button class="btn btn-warning btn-xs">有疑问</button>
-                    <button class="btn btn-success btn-xs">点赞</button>
+                    <button class="btn btn-danger btn-xs" onclick="feedback({{ i.id }},1)">报错</button>
+                    <button class="btn btn-warning btn-xs" onclick="feedback({{ i.id }},2)">有疑问</button>
+                    <button class="btn btn-success btn-xs" onclick="praise({{ i.id }})">点赞</button>
                 </td>
             </tr>
         {% endfor %}
@@ -54,6 +54,72 @@
 
 {#模态框#}
 {% include 'expshare/modals.html' %}
+<script type="text/javascript">
+    {#点赞#}
+    function praise(id){
+        {% if  request.user.is_authenticated %}
+            $.ajax({
+                type: 'get',
+                url: '/praise/',
+                data: {'shareid':id},
+                success: function(resp){
+                    console.log(resp.result+"=="+resp.msg);
+                    if(resp.result=='success'){
+                        var v = parseInt($("#viewnum_"+id).html())+1;
+                        $("#viewnum_"+id).html(v);
+                    }else{
+                        alert(resp.msg);
+                    }
+
+                }
+            })
+        {% else %}
+            alert("请先登录");
+            return false;
+        {% endif %}
+    }
+    {# 反馈 #}
+    function feedback(id,type){
+        {% if  request.user.is_authenticated %}
+            $("#shareid").val(id);
+            $("#type").val(type);
+            $("#modal-feedback").modal("show");
+        {% else %}
+            alert("请先登录");
+            return false;
+        {% endif %}
+
+    }
+    $("#btn-submit-feedback").bind("click",function(){
+        var reason = $("#reason").val().trim()
+        if(reason.lenth==0){
+            alert("请填写反馈原因！");
+            return false;
+        }
+        $.ajax({
+            type: 'get',
+            url: '/feedback/',
+            data: {
+                'shareid': $("#shareid").val(),
+                'type': $("#type").val(),
+                'reason': $("#reason").val()
+            },
+            success: function (resp) {
+               alert(resp.msg);
+               if(resp.result=='success'){
+                   $("#btn-close-feedback").click();
+               }
+            }
+        })
+
+    });
+    /*清空模态框*/
+    $('#modal-feedback').on('hidden.bs.modal', function () {
+       $("#shareid").val("");
+       $("#type").val("");
+       $("#reason").val("");
+    });
+</script>
 
 </body>
 </html>

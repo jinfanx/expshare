@@ -19,11 +19,48 @@
 </div>
 
 {#注册弹窗#}
-<div class="modal fade" id="model-register" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+<div class="modal fade" id="model-register" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true"
      data-backdrop="false">
     <div class="modal-dialog">
         <div class="modal-content">
 
+        </div>
+    </div>
+</div>
+
+{#登录弹窗#}
+<div class="modal fade" id="modal-login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+     data-backdrop="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+        </div>
+    </div>
+</div>
+
+{#反馈弹窗#}
+<div class="modal fade" id="modal-feedback" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+     data-backdrop="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">
+                    错误反馈
+                </h4>
+            </div>
+            <div class="modal-body">
+                    <input type="hidden" id="shareid" name="shareid">
+                    <input type="hidden" id="type" name="type">
+                    <textarea class="form-control" placeholder="原因" required name="reason" id="reason"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="btn-close-feedback">关闭</button>
+                <button type="button" class="btn btn-primary" id="btn-submit-feedback">
+                        提交
+                </button>
+            </div>
         </div>
     </div>
 </div>
