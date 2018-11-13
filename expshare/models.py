@@ -68,6 +68,7 @@ class UserExtends(models.Model):
     #职业 0-学生 1-职场人
     profession = models.IntegerField(verbose_name='职业')
 
+
 #反馈-注册用户真对某条记录发起的反馈，包括错误反馈、有疑问等
 class Feedback(BaseModel):
     share = models.ForeignKey(to='ExpModel',to_field='id',on_delete=models.CASCADE,verbose_name='问题')
@@ -91,3 +92,9 @@ class SharePraise(models.Model):
     id = models.AutoField(primary_key=True)
     shareid = models.IntegerField()
     userid = models.IntegerField()
+
+#邮件注册随机编号
+class MailRegisterCode(models.Model):
+    id = models.AutoField(primary_key=True)
+    userid = models.OneToOneField(User,on_delete=models.DO_NOTHING)
+    code = models.CharField(max_length=300)

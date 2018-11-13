@@ -1,0 +1,12 @@
+INSERT INTO `expshare_sharepraise` VALUES (1, 44, 1);
+INSERT INTO `expshare_sharepraise` VALUES (4, 21, 1);
+INSERT INTO `expshare_sharepraise` VALUES (5, 3, 1);
+INSERT INTO `expshare_sharepraise` VALUES (6, 63, 1);
+INSERT INTO `expshare_sharepraise` VALUES (7, 43, 1);
+INSERT INTO `expshare_sharepraise` VALUES (8, 66, 43);
+INSERT INTO `expshare_sharepraise` VALUES (9, 66, 1);
+INSERT INTO `expshare_sharepraise` VALUES (10, 65, 43);
+INSERT INTO `expshare_sharepraise` VALUES (11, 67, 43);
+INSERT INTO `expshare_sharepraise` VALUES (12, 68, 1);
+INSERT INTO `expshare_sharepraise` VALUES (13, 69, 1);
+INSERT INTO `expshare_sharepraise` VALUES (14, 70, 1);

@@ -19,6 +19,7 @@ class ExpModelAdmin(admin.ModelAdmin):
 class FeedbackAdmin(admin.ModelAdmin):
     list_display = ('share','type','reason','is_resolved','state','resolve_note','createuser','createdate','updateuser','updatedate',)
     list_per_page = 20
+    list_filter = ('type','is_resolved','state',)
 
 class UserInline(admin.StackedInline):
     model = models.UserExtends

@@ -90,10 +90,9 @@ def addcategory(request):
         dic['createuser'] = request.user.username
         dic['updateuser'] = request.user.username
         models.CategoryModel.objects.create(**dic)
-        return HttpResponse(u'添加成功')
+        return HttpResponse(JsonUtil.get_json_response('success','添加成功！'),content_type='application/json')
     except Exception as e:
-        raise e
-        return HttpResponse(u'添加失败' + e.__str__(), )
+        return HttpResponse(JsonUtil.get_json_response('fail',u'添加失败' + e.__str__()),content_type='application/json' )
 
 
 '''新建分享跳转'''
@@ -199,10 +198,9 @@ def register(request):
     email = req.get('email')
     phone = req.get('phone')
     profession = req.get('profession')
-    ls = locals()
-    for k in ls:
-        print("{0}:{1}".format(k,ls[k]))
+
     #用户未激活，需要点击邮件中的链接激活账户
+    u = None
     try:
         u = User.objects.create_user(username,password=password,email=email,is_active=False)
         dic = {'user':u, 'phone':phone, 'profession': profession}
@@ -211,15 +209,20 @@ def register(request):
         return HttpResponse(JsonUtil.get_json_response('fail','添加用户失败'+e.__str__()),content_type='application/json')
     #发邮件
     try:
-        MailUtil.send_register_email(email,u.id)
+        MailUtil.send_register_email(email,u)
     except Exception as e:
+        e.with_traceback()
         return HttpResponse(JsonUtil.get_json_response('fail','邮件发送失败！'+e.__str__()),content_type='application/json')
     return HttpResponse(JsonUtil.get_json_response('success','注册成功，邮件确认即可完成注册！'),content_type='application/json')
 
-def active_acct(request,email):
+def active_acct(request,userid,code):
+    #编码校验
+    c = models.MailRegisterCode.objects.filter(userid=userid).filter(code=code).count()
+    if c==0:
+        return render(request, 'expshare/auth/regsuccess.html', {'result': 'fail', 'msg': '账户激活失败！'})
     #激活邮件对应的账户
     try:
-        u = User.objects.filter(email=email).update(is_active=True)
+        u = User.objects.filter(id=userid).update(is_active=True)
     except Exception as e:
         return render(request, 'expshare/auth/regsuccess.html', {'result':'fail','msg':'账户激活失败！'+e.__str__()})
 
@@ -268,15 +271,10 @@ def login(request):
             msg = '用户不存在！'
             return HttpResponse(JsonUtil.get_json_response(result,msg),content_type='application/json')
         else:
-            print('邮箱登录或密码错误！'+username)
             # user = user[0]
             user = user.get()
             l = locals()
-            for k in l:
-                print("{0}={1}".format(k,l[k]))
-            print("用户名：：：："+user.username)
             user = authenticate(username=user.username,password=password)
-            print("用户认证："+user.__str__())
 
 
     if user==None:

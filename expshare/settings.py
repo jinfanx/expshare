@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+import pymysql
+
+# django中mysql支持
+pymysql.install_as_MySQLdb()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -124,6 +128,8 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+#静态文件位置，生产环境需要配置，并python manage.py collectstatic将静态文件收集到此目录
+#STATIC_ROOT = '/data/static'
 
 #分页参数，页面大小
 PAGE_SIZE = 10
@@ -141,6 +147,6 @@ HAYSTACK_SEARCH_RESULTS_PER_PAGE = 20
 EMAIL_USE_SSL = True
 EMAIL_HOST = 'smtp.qq.com'
 EMAIL_PORT = 465
-EMAIL_HOST_USER = 'renjin_fan@foxmail.com'
-EMAIL_HOST_PASSWORD = 'zndpszrbwxjafbde'
+EMAIL_HOST_USER = 'username@qq.com'
+EMAIL_HOST_PASSWORD = 'password'
 DEFAULT_FROM_EMAIL = 'jinfanx'

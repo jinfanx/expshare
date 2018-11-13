@@ -31,21 +31,27 @@
             <tr>
                 <td>{{ forloop.counter|add:page.start_index|add:-1 }}</td>
                 <td>
-{#                    {% highlight i.object.problem with query max_length 500 %}#}
-                    <div class="str-highlight"><pre>{{ i.object.problem }}</pre></div>
+                    {#                    {% highlight i.object.problem with query max_length 500 %}#}
+                    <div class="str-highlight">
+                        <pre>{{ i.object.problem }}</pre>
+                    </div>
                 </td>
                 {% if not i.object.reason %}
                     <td>无</td>
                 {% else %}
-                    <td><pre>{{ i.object.reason }}</pre></td>
+                    <td>
+                        <pre>{{ i.object.reason }}</pre>
+                    </td>
                 {% endif %}
 
-                <td><pre>{{ i.object.resolve }}</pre></td>
-                <td>{{ i.object.viewnum }}</td>
+                <td>
+                    <pre>{{ i.object.resolve }}</pre>
+                </td>
+                <td><span id="viewnum_{{ i.object.id }}">{{ i.object.viewnum }}</span></td>
                 <td style=" white-space:nowrap">
-                    <button class="btn btn-danger btn-xs">报错</button>
-                    <button class="btn btn-warning btn-xs">有疑问</button>
-                    <button class="btn btn-success btn-xs">点赞</button>
+                    <button class="btn btn-danger btn-xs" onclick="feedback({{ i.object.id }},1)">报错</button>
+                    <button class="btn btn-warning btn-xs" onclick="feedback({{ i.object.id }},2)">有疑问</button>
+                    <button class="btn btn-success btn-xs" onclick="praise({{ i.object.id }})">点赞</button>
                 </td>
             </tr>
         {% empty %}
@@ -72,11 +78,79 @@
 </html>
 <script>
 
-    $(document).ready(function(){
-        $(".str-highlight").each(function(i){
+    $(document).ready(function () {
+        $(".str-highlight").each(function (i) {
             console.log($(this).html());
-            $(this).html(highlight($(this).html(),'{{ query }}'));
+            $(this).html(highlight($(this).html(), '{{ query }}'));
         });
+    });
+    {#点赞#}
+
+    function praise(id) {
+        {% if  request.user.is_authenticated %}
+            $.ajax({
+                type: 'get',
+                url: '/praise/',
+                data: {'shareid': id},
+                success: function (resp) {
+                    console.log(resp.result + "==" + resp.msg);
+                    if (resp.result == 'success') {
+                        var v = parseInt($("#viewnum_" + id).html()) + 1;
+                        $("#viewnum_" + id).html(v);
+                    } else {
+                        alert(resp.msg);
+                    }
+
+                }
+            })
+        {% else %}
+            alert("请先登录");
+            return false;
+        {% endif %}
+    }
+
+    {# 反馈 #}
+
+    function feedback(id, type) {
+        {% if  request.user.is_authenticated %}
+            $("#shareid").val(id);
+            $("#type").val(type);
+            $("#modal-feedback").modal("show");
+        {% else %}
+            alert("请先登录");
+            return false;
+        {% endif %}
+
+    }
+
+    $("#btn-submit-feedback").bind("click", function () {
+        var reason = $("#reason").val().trim()
+        if (reason.lenth == 0) {
+            alert("请填写反馈原因！");
+            return false;
+        }
+        $.ajax({
+            type: 'get',
+            url: '/feedback/',
+            data: {
+                'shareid': $("#shareid").val(),
+                'type': $("#type").val(),
+                'reason': $("#reason").val()
+            },
+            success: function (resp) {
+                alert(resp.msg);
+                if (resp.result == 'success') {
+                    $("#btn-close-feedback").click();
+                }
+            }
+        })
+
+    });
+    /*清空模态框*/
+    $('#modal-feedback').on('hidden.bs.modal', function () {
+        $("#shareid").val("");
+        $("#type").val("");
+        $("#reason").val("");
     });
 
 </script>

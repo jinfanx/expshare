@@ -1,0 +1,3 @@
+INSERT INTO `auth_user` VALUES (1, 'pbkdf2_sha256$120000$ooHTZpyqHbrB$ErJt1YcF3oC/jP9P1tSYcWU+2vd8ohHobW86FbrpuJw=', '2018-11-09 17:13:04', 1, 'jinfanx', '', '', '', 1, 1, '2018-10-28 18:23:51');
+INSERT INTO `auth_user` VALUES (35, 'pbkdf2_sha256$120000$xvtPqkNSon5L$TE9LuPh2jxDou47xtYkzofB3vDxVSKtLSbBDxRyUZxo=', '2018-11-08 22:55:34', 0, '测试用户1', '', '', 'renjin_fan@foxmail.com', 0, 1, '2018-11-07 19:48:06');
+INSERT INTO `auth_user` VALUES (43, 'pbkdf2_sha256$120000$9PC4P12dWtpu$nplEkb0UxQxH5+mwuzTgbNiqOO9vryOyXSA3QWzcx/A=', '2018-11-09 14:34:21', 0, 'freej', '', '', '1843832733@qq.com', 0, 1, '2018-11-08 22:59:13');
