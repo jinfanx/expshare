@@ -1,1 +1,3 @@
-expshare/settings.py
+.idea/
+venv/
+*.pyc
