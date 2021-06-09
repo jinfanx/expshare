@@ -1,5 +1,5 @@
 asgiref==3.3.1
-Django==3.1.4
+Django==3.1.10
 django-haystack==3.0
 jieba==0.42.1
 PyMySQL==0.10.1
